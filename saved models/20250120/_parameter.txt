@@ -1,0 +1,16 @@
+model.add(layers.Conv1D(filters=64, kernel_size=2, activation='relu', input_shape=(window_size, num_features)))
+    model.add(layers.MaxPooling1D(pool_size=2))
+    model.add(layers.Conv1D(filters=128, kernel_size=2, activation='relu'))
+    model.add(layers.MaxPooling1D(pool_size=2))
+    model.add(layers.LSTM(100))
+
+    model.add(layers.Dense(output_days*output_features))  # 7 days * 2 targets (High, Low)
+    model.add(layers.Reshape((7, 2))) # Reshape output to (7, 2)
+
+    model.compile(optimizer='adam', loss='mean_squared_error', metrics=['mae'])
+
+seed = 42
+test_size = 0.8
+epochs = 20
+batch_size = 8
+shuffle=True
